@@ -51,7 +51,6 @@ show-release:
 
 fetch: $(BUILDDIR) $(BUILDDIR)/$(BUNDLE_FILE)
 
-#populate: fetch $(rpm_subdirs) $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz $(dest_patchfiles) $(RPMDIR)/SOURCES/$(BUNDLE_FILE) $(RPMDIR)/SPECS/$(APP).spec
 populate: fetch $(rpm_subdirs) $(dest_patchfiles) $(RPMDIR)/SOURCES/$(BUNDLE_FILE) $(RPMDIR)/SPECS/$(APP).spec
 
 rpm: populate $(RPMDIR)/RPMS/noarch/$(RPM_NAME)
