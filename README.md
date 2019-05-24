@@ -40,7 +40,9 @@ Notes/Todo
   
   Similarly, the service daemon is NOT stopped before upgrade or remove.
   
-  Therefore, you need to stop/start the service manually. Patches to improve this behavior are welcome!  
+  Therefore, you need to stop/start the service manually. Patches to improve this behavior are welcome!
+  
+* Add an installer for .deb packaging  
 
 ## The Fine Print
 
