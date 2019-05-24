@@ -31,13 +31,13 @@ cd ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/opt/sonatype/nexus3
-mkdir -p %{buildroot}/var/opt/sonatype-work/nexus3
+mkdir -p %{buildroot}/opt/sonatype/sonatype-work/nexus3
 rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/nexus-$(echo ${RPM_PACKAGE_VERSION} | tr '_' '-')/ %{buildroot}/opt/sonatype/nexus3
-rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/sonatype-work/nexus3/ %{buildroot}/var/opt/sonatype-work/nexus3
+rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/sonatype-work/nexus3/ %{buildroot}/opt/sonatype/sonatype-work/nexus3
 
 #patch config
 perl -p -i -e 's/#run_as_user=""/run_as_user="nexus3"/' %{buildroot}/opt/sonatype/nexus3/bin/nexus.rc
-perl -p -i -e 's/\.\.\/sonatype-work/\/var\/opt\/sonatype-work/g' %{buildroot}/opt/sonatype/nexus3/bin/nexus.vmoptions
+perl -p -i -e 's/\.\.\/sonatype-work/\/opt\/sonatype\/sonatype-work/g' %{buildroot}/opt/sonatype/nexus3/bin/nexus.vmoptions
 
 mkdir -p %{buildroot}/etc/init.d
 ln -sf /opt/sonatype/nexus3/bin/nexus %{buildroot}/etc/init.d/nexus3
@@ -47,11 +47,11 @@ rm -rf %{buildroot}
 
 %pre
 if [ $1 = 1 ]; then
-[ -d /var/opt/sonatype-work ] || mkdir -p /var/opt/sonatype-work
+[ -d /opt/sonatype/sonatype-work ] || mkdir -p /opt/sonatype/sonatype-work
 # create user account
 getent group nexus3 >/dev/null || groupadd -r nexus3
 getent passwd nexus3 >/dev/null || \
-	useradd -r -g nexus3 -d /var/opt/sonatype-work/nexus3 -m -c "nexus3 role account" -s /bin/bash nexus3
+	useradd -r -g nexus3 -d /opt/sonatype/sonatype-work/nexus3 -m -c "nexus3 role account" -s /bin/bash nexus3
 fi
 
 %post
@@ -74,8 +74,8 @@ fi
 %config(noreplace) /opt/sonatype/nexus3/bin/nexus.rc
 %config(noreplace) /opt/sonatype/nexus3/bin/nexus.vmoptions
 %defattr(-,nexus3,nexus3)
-/var/opt/sonatype-work/nexus3
+/opt/sonatype/sonatype-work/nexus3
 
 %changelog
-* Wed May 21 2019 Dan Rollo <drollo@sonatype.com>
-- initial .spec from prior work of Jason Swank, Rick Briganti, Alvin Gunkel
+* Tue May 21 2019 Dan Rollo <drollo@sonatype.com>
+initial .spec from prior work of Jason Swank, Rick Briganti, Alvin Gunkel
