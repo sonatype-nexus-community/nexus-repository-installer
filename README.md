@@ -41,3 +41,28 @@ Notes/Todo
   Similarly, the service daemon is NOT stopped before upgrade or remove.
   
   Therefore, you need to stop/start the service manually. Patches to improve this behavior are welcome!  
+
+## The Fine Print
+
+It is worth noting that this is **NOT SUPPORTED** by Sonatype, and is a contribution to the open source community (read: you!)
+
+Don't worry, using this community item does not "void your warranty". In a worst case scenario, you may be asked to 
+remove the community item by the Sonatype Support team in order to determine the cause of any issues.
+
+Remember:
+
+* Use this contribution at the risk tolerance that you have
+* Do **NOT** file Sonatype support tickets with Sonatype support related to this project
+* **DO** file issues here on GitHub, so that the community can pitch in
+
+Phew, that was easier than I thought. Last but not least of all:
+
+Have fun building and using this item, we are glad to have you here!
+
+## Getting help
+
+Looking to contribute, but need some help? There's a few ways to get information:
+
+* Chat with us on [Gitter](https://gitter.im/sonatype/nexus-developers)
+* Check out the [Nexus3](http://stackoverflow.com/questions/tagged/nexus3) tag on Stack Overflow
+* Check out the [Nexus Repository User List](https://groups.google.com/a/glists.sonatype.com/forum/?hl=en#!forum/nexus-users)
