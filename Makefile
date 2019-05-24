@@ -1,6 +1,6 @@
 APP = nexus-repository-manager
 
-# The app version (as bundled and published to RSO)
+# The app version (as bundled and published by Sonatype)
 #VERSION ?= 3.15.2-01
 VERSION ?= 3.16.1-02
 
@@ -33,7 +33,7 @@ rpm_subdirs := $(addprefix $(RPMDIR)/,BUILD SRPMS RPMS SPECS SOURCES)
 
 help:
 	@echo 'Usage:                                                 '
-	@echo '  make fetch              retrieve bundle from RSO     '
+	@echo '  make fetch              retrieve bundle from Sonatype'
 	@echo '  make populate           `fetch`; populate rpmbuild tree with sources and patches'
 	@echo '  make docker             use a docker container to build the RPM'
 	@echo '  make show-version       displays version to be built '
