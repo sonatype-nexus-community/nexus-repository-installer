@@ -47,7 +47,7 @@ rm -rf %{buildroot}
 
 %pre
 if [ $1 = 1 ]; then
-[ -d /opt/sonatype/sonatype-work ] || mkdir -p /opt/sonatype/sonatype-work
+[ -d /opt/sonatype/sonatype-work/nexus3 ] || mkdir -p /opt/sonatype/sonatype-work/nexus3
 # create user account
 getent group nexus3 >/dev/null || groupadd -r nexus3
 getent passwd nexus3 >/dev/null || \
