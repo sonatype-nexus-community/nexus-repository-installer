@@ -62,7 +62,7 @@ fi
 
 %preun
 if [ $1 = 0 ]; then
-  /sbin/service stop nexus3
+  /sbin/service nexus3 stop
   /sbin/chkconfig --del nexus3
 fi
 
