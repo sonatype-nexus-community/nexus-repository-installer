@@ -86,7 +86,7 @@ fi
 /opt/sonatype/sonatype-work/nexus3
 
 %changelog
-* Tue May 29 2019 Dan Rollo <drollo@sonatype.com>
+* Wed May 29 2019 Dan Rollo <drollo@sonatype.com>
 automatically start and stop service daemon as needed during initial install and upgrades
 * Tue May 21 2019 Dan Rollo <drollo@sonatype.com>
 initial .spec from prior work of Jason Swank, Rick Briganti, Alvin Gunkel
