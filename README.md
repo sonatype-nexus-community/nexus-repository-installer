@@ -36,11 +36,12 @@ Tweaks made to the Application
 Notes/Todo
 ----------
 
-* Currently, the service daemon (linked to `/etc/init.d/nexus3`) is NOT started after install.
+* ~~Currently, the service daemon (linked to `/etc/init.d/nexus3`) is NOT started after install.~~
   
-  Similarly, the service daemon is NOT stopped before upgrade or remove.
+  ~~Similarly, the service daemon is NOT stopped before upgrade or remove.~~
   
-  Therefore, you need to stop/start the service manually. Patches to improve this behavior are welcome!
+  ~~Therefore, you need to stop/start the service manually. Patches to improve this behavior are welcome!~~
+  * Done: The .rpm will now start Nexus Repository Manager after installation, and stop and restart during upgrade.
   
 * Add an installer for .deb packaging  
 

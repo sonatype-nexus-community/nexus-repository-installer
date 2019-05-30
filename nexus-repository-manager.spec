@@ -53,11 +53,20 @@ getent group nexus3 >/dev/null || groupadd -r nexus3
 getent passwd nexus3 >/dev/null || \
 	useradd -r -g nexus3 -d /opt/sonatype/sonatype-work/nexus3 -m -c "nexus3 role account" -s /bin/bash nexus3
 fi
+# stop the service before upgrading
+if [ $1 = 2 ]; then
+  /sbin/service nexus3 stop
+fi
 
 %post
-# ensure the service does not start upon first installation
+# start the service upon first installation
 if [ $1 = 1 ]; then
   /sbin/chkconfig --add nexus3
+  /sbin/service nexus3 start
+fi
+# start the service after upgrading
+if [ $1 = 2 ]; then
+  /sbin/service nexus3 start
 fi
 
 %preun
@@ -79,3 +88,5 @@ fi
 %changelog
 * Tue May 21 2019 Dan Rollo <drollo@sonatype.com>
 initial .spec from prior work of Jason Swank, Rick Briganti, Alvin Gunkel
+* Tue May 29 2019 Dan Rollo <drollo@sonatype.com>
+automatically start and stop service daemon as needed during initial install and upgrades
