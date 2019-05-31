@@ -58,6 +58,10 @@ Notes/Todo
 * ~~Add an installer for .deb packaging~~
   * Done: A .deb installer is created by the `make docker-all` command  
 
+* Use `rpmlint` to validate the generated .rpm installer.
+
+* Use `lintian` to validate the generated .deb installer.
+
 ## The Fine Print
 
 It is worth noting that this is **NOT SUPPORTED** by Sonatype, and is a contribution to the open source community (read: you!)
