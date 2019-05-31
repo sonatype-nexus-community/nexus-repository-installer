@@ -1,7 +1,7 @@
 About
 -----
 
-Package Nexus Repository Manager 3 as an RPM.
+Package Nexus Repository Manager 3 as an RPM and DEB.
 
 Overview
 --------
