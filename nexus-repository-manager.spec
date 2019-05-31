@@ -58,7 +58,7 @@ fi
 if [ $1 = 2 ]; then
   /sbin/service nexus3 stop
 elif [ "$1" = "upgrade" ]; then
-  service nexus3 stop
+  /usr/sbin/service nexus3 stop
 fi
 
 %post
@@ -69,13 +69,13 @@ if [ $1 = 1 ]; then
   /sbin/service nexus3 start
 elif [ "$1" = "configure" ]; then
   update-rc.d nexus3 defaults
-  service nexus3 start
+  /usr/sbin/service nexus3 start
 fi
 # start the service after upgrading
 if [ $1 = 2 ]; then
   /sbin/service nexus3 start
 elif [ "$1" = "upgrade" ]; then
-  service nexus3 start
+  /usr/sbin/service nexus3 start
 fi
 
 %preun
@@ -84,7 +84,7 @@ if [ $1 = 0 ]; then
   /sbin/service nexus3 stop
   /sbin/chkconfig --del nexus3
 elif [ "$1" = "remove" ]; then
-  service nexus3 stop
+  /usr/sbin/service nexus3 stop
   update-rc.d nexus3 remove
 fi
 
