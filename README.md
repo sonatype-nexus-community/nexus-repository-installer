@@ -16,6 +16,10 @@ This is why you will see a number of `elif` commands in the `%pre`, `%post`, and
 to ensure the scriptlets work on both distributions. 
 The DEB will be written to `./build`. 
 
+Examples:
+
+Build the RPM locally (requires linux tooling).  The RPM will be written to `build/`.
+
 ```
 $ make build
 $ VERSION=3.15.2-01 make rpm
