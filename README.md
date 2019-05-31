@@ -11,7 +11,7 @@ environment, and invoke `rpmbuild`.
 You can specify the bundle version to download by setting the `VERSION` environment variable 
 The RPM will be written to `./build`.
 
-The DEB is generated from the RPM using the `alien` command in another docker container.
+The DEB is generated from the RPM using the [alien](https://wiki.debian.org/Alien) command in another docker container.
 This is why you will see a number of `elif` commands in the `%pre`, `%post`, and `%preun` sections of the `.spec` file,
 to ensure the scriptlets work on both distributions. 
 The DEB will be written to `./build`. 
