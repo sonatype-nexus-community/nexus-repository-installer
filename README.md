@@ -11,6 +11,11 @@ environment, and invoke `rpmbuild`.
 You can specify the bundle version to download by setting the `VERSION` environment variable 
 The RPM will be written to `./build`.
 
+The DEB is generated from the RPM using the `alien` command in another docker container.
+This is why you will see a number of `elif` commands in the `%pre`, `%post`, and `%preun` sections of the `.spec` file,
+to ensure the scriptlets work on both distributions. 
+The DEB will be written to `./build`. 
+
 ```
 $ make build
 $ VERSION=3.15.2-01 make rpm
@@ -23,6 +28,13 @@ $ make docker
 $ VERSION=3.15.2-01 make docker
 ```
 
+Build the RPM in a docker container and build the DEB in another container.  The RPM and DEB will be written to `build/`.
+
+```
+$ make docker-all
+$ VERSION=3.15.2-01 make docker-all
+```
+
 Use the `make help` command to see more options.
 
 Tweaks made to the Application
@@ -30,7 +42,7 @@ Tweaks made to the Application
 
 * Software installs to */opt/sonatype/nexus3*.
 
-* Patch nexus.properties: The `data directory` is */opt/sonatype/sonatype-work/nexus3*.
+* The `data directory` is */opt/sonatype/sonatype-work/nexus3*.
 
 
 Notes/Todo
@@ -43,7 +55,8 @@ Notes/Todo
   ~~Therefore, you need to stop/start the service manually. Patches to improve this behavior are welcome!~~
   * Done: The .rpm will now start Nexus Repository Manager after installation, and stop and restart during upgrade.
   
-* Add an installer for .deb packaging  
+* ~~Add an installer for .deb packaging~~
+  * Done: A .deb installer is created by the `make docker-all` command  
 
 ## The Fine Print
 
@@ -69,3 +82,11 @@ Looking to contribute, but need some help? There's a few ways to get information
 * Chat with us on [Gitter](https://gitter.im/sonatype/nexus-developers)
 * Check out the [Nexus3](http://stackoverflow.com/questions/tagged/nexus3) tag on Stack Overflow
 * Check out the [Nexus Repository User List](https://groups.google.com/a/glists.sonatype.com/forum/?hl=en#!forum/nexus-users)
+
+## Debugging
+
+* It may be helpful to run the .rpm with debug commands like the one below:
+
+      rpm -ivvh nexus-repository-manager-3.15.2_01-1.el7.noarch.rpm 
+      
+  This will provide tons of information about what the installer is doing.

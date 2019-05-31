@@ -46,7 +46,8 @@ ln -sf /opt/sonatype/nexus3/bin/nexus %{buildroot}/etc/init.d/nexus3
 rm -rf %{buildroot}
 
 %pre
-if [ $1 = 1 ]; then
+echo pre $1
+if [ $1 = 1 ] || [ "$1" = "install" ]; then
 [ -d /opt/sonatype/sonatype-work/nexus3 ] || mkdir -p /opt/sonatype/sonatype-work/nexus3
 # create user account
 getent group nexus3 >/dev/null || groupadd -r nexus3
@@ -56,23 +57,35 @@ fi
 # stop the service before upgrading
 if [ $1 = 2 ]; then
   /sbin/service nexus3 stop
+elif [ "$1" = "upgrade" ]; then
+  service nexus3 stop
 fi
 
 %post
+echo post $1
 # start the service upon first installation
 if [ $1 = 1 ]; then
   /sbin/chkconfig --add nexus3
   /sbin/service nexus3 start
+elif [ "$1" = "configure" ]; then
+  update-rc.d nexus3 defaults
+  service nexus3 start
 fi
 # start the service after upgrading
 if [ $1 = 2 ]; then
   /sbin/service nexus3 start
+elif [ "$1" = "upgrade" ]; then
+  service nexus3 start
 fi
 
 %preun
+echo preun $1
 if [ $1 = 0 ]; then
   /sbin/service nexus3 stop
   /sbin/chkconfig --del nexus3
+elif [ "$1" = "remove" ]; then
+  service nexus3 stop
+  update-rc.d nexus3 remove
 fi
 
 %files
