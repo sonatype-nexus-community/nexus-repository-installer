@@ -102,7 +102,7 @@ Looking to contribute, but need some help? There's a few ways to get information
 ## Archive
 
 The `archive` branch contains some prebuilt installer binaries. These are tracked using [git lfs](https://git-lfs.github.com)
-to ensure a check of the project does not get crazy huge. The steps below are used to add a new version to the archive
+to ensure a clone of the project does not get crazy huge. Follow the steps below to add a new version to the archive
 branch:
 
   1. Update the `Makefile` default VERSION value to the new version to be archived. e.g.
