@@ -6,7 +6,7 @@ APP = nexus-repository-manager
 
 # The app version (as bundled and published by Sonatype)
 #VERSION ?= 3.15.2-01
-VERSION ?= 3.16.1-02
+VERSION ?= 3.16.2-01
 
 # the name of the original bundle file
 #BUNDLE_FILE := $(APP)-$(VERSION)-unix.tar.gz
