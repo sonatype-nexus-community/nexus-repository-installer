@@ -8,7 +8,7 @@ Overview
 
 Make is used to download the application bundle from Sonatype, populate an RPM build
 environment, and invoke `rpmbuild`.
-You can specify the bundle version to download by setting the `VERSION` environment variable 
+You can specify the bundle version to download by setting the `VERSION` environment variable. 
 The RPM will be written to `./build`.
 
 The DEB is generated from the RPM using the [alien](https://wiki.debian.org/Alien) command in another docker container.
@@ -107,11 +107,11 @@ branch:
 
   1. Update the `Makefile` default VERSION value to the new version to be archived. e.g.
   
-         VERSION ?= 3.16.1-02
+         VERSION ?= 3.16.2-01
          
      to:
      
-         VERSION ?= 3.16.2-01
+         VERSION ?= 3.17.0-01
 
      Commit the updated `Makefile` to `master`.
      
@@ -132,18 +132,18 @@ branch:
          git checkout archive
          git pull
          
-         cp build/nexus-repository-manager-3.16.2_01-1.el7.noarch.rpm archive/
-         cp build/nexus-repository-manager_3.16.201-2_all.deb archive/
+         cp build/nexus-repository-manager-3.17.0_01-1.el7.noarch.rpm archive/
+         cp build/nexus-repository-manager_3.17.001-2_all.deb archive/
          
-         git add archive/nexus-repository-manager-3.16.2_01-1.el7.noarch.rpm
-         git add archive/nexus-repository-manager_3.16.201-2_all.deb
+         git add archive/nexus-repository-manager-3.17.0_01-1.el7.noarch.rpm
+         git add archive/nexus-repository-manager_3.17.001-2_all.deb 
          
-         git lfs lock archive/nexus-repository-manager-3.16.2_01-1.el7.noarch.rpm
-         git lfs lock archive/nexus-repository-manager_3.16.201-2_all.deb
+         git lfs lock archive/nexus-repository-manager-3.17.0_01-1.el7.noarch.rpm
+         git lfs lock archive/nexus-repository-manager_3.17.001-2_all.deb
 
          git lfs ls-files
          
-         git commit -m 'archive version 3.16.2_01'
+         git commit -m 'archive version 3.17.0_01'
          git push
 
   4. Checkout the `master` branch.
