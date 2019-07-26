@@ -5,8 +5,7 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 APP = nexus-repository-manager
 
 # The app version (as bundled and published by Sonatype)
-#VERSION ?= 3.15.2-01
-VERSION ?= 3.17.0-01
+VERSION ?= 3.18.0-01
 
 # the name of the original bundle file
 #BUNDLE_FILE := $(APP)-$(VERSION)-unix.tar.gz
