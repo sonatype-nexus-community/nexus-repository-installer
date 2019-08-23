@@ -56,8 +56,18 @@ jobs:
             echo export DEB_NAME="${DEB_NAME}" >> "$BASH_ENV"
 
             curl -v --user ${NEXUS_RM_USERNAME_YUM}:${NEXUS_RM_PASSWORD_YUM} --upload-file build/${RPM_NAME} ${NEXUS_RM_SERVERURL}${REPOSITORY_NAME_YUM}/
+            res=$?
+            if test "$res" != "0"; then
+              echo "the yum curl command failed with: $res"
+              exit 1
+            fi
 
             curl -v --user ${NEXUS_RM_USERNAME_APT}:${NEXUS_RM_PASSWORD_APT} -H "Content-Type: multipart/form-data" --data-binary "@build/${DEB_NAME}" ${NEXUS_RM_SERVERURL}${REPOSITORY_NAME_APT}/
+            res=$?
+            if test "$res" != "0"; then
+              echo "the apt curl command failed with: $res"
+              exit 2
+            fi
 
 #      - store_artifacts:
 #          path: build/
