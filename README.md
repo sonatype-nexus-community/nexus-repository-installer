@@ -98,52 +98,23 @@ Looking to contribute, but need some help? There's a few ways to get information
       rpm -ivvh nexus-repository-manager-3.15.2_01-1.el7.noarch.rpm 
       
   This will provide tons of information about what the installer is doing.
-
-## Archive
-
-The `archive` branch contains some prebuilt installer binaries. These are tracked using [git lfs](https://git-lfs.github.com)
-to ensure a clone of the project does not get crazy huge. Follow the steps below to add a new version to the archive
-branch:
-
-  1. Update the `Makefile` default VERSION value to the new version to be archived. e.g.
   
-         VERSION ?= 3.16.2-01
+* CI local debug - you can run a local ci build using the following:
+
+      circleci config process .circleci/config.yml > .circleci/local-config.yml  \
+          &&  circleci local execute --config .circleci/local-config.yml --job build
+  
+
+## Build Installers via CI
+
+  1. Update the version number in `version-to-build.txt` to the new version to be built. e.g.
+  
+         3.16.2-01
          
      to:
      
-         VERSION ?= 3.17.0-01
+         3.17.0-01
 
-     Commit the updated `Makefile` to `master`.
+     Commit and push the updated `version-to-build.txt` file to `master`.
      
-  2. Build the new installers via:
-  
-         make docker-all
-         
-  3. Checkout and pull the `archive` branch, copy the new installers to the `archive` folder. 
-     
-     `git add` the new installers in the `archive` folder.
-     
-     Lock new installer archive files.
-     
-     (Optional) Sanity check that the new installers are showing in the lfs files list.
-     
-     Commit the changes and push. The push will take a long time.
-
-         git checkout archive
-         git pull
-         
-         cp build/nexus-repository-manager-3.17.0_01-1.el7.noarch.rpm archive/
-         cp build/nexus-repository-manager_3.17.001-2_all.deb archive/
-         
-         git add archive/nexus-repository-manager-3.17.0_01-1.el7.noarch.rpm
-         git add archive/nexus-repository-manager_3.17.001-2_all.deb 
-         
-         git lfs lock archive/nexus-repository-manager-3.17.0_01-1.el7.noarch.rpm
-         git lfs lock archive/nexus-repository-manager_3.17.001-2_all.deb
-
-         git lfs ls-files
-         
-         git commit -m 'archive version 3.17.0_01'
-         git push
-
-  4. Checkout the `master` branch.
+  2. After a new build has completed, click the `deploy_staging` or `deploy` workflow.

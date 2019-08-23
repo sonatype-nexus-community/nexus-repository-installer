@@ -5,7 +5,7 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 APP = nexus-repository-manager
 
 # The app version (as bundled and published by Sonatype)
-VERSION ?= 3.18.1-01
+VERSION ?= $(shell cat version-to-build.txt)
 
 # the name of the original bundle file
 #BUNDLE_FILE := $(APP)-$(VERSION)-unix.tar.gz
@@ -54,6 +54,12 @@ show-version:
 
 show-release:
 	@echo $(PKG_RELEASE)
+
+show-rpm-name:
+	@echo $(RPM_NAME)
+
+show-deb-name:
+	@echo $(DEB_NAME)
 
 fetch: $(BUILDDIR) $(BUILDDIR)/$(BUNDLE_FILE)
 
@@ -112,8 +118,8 @@ $(BUILDDIR)/$(RPM_NAME): $(RPMDIR)/RPMS/noarch/$(RPM_NAME)
 
 # dockerize
 docker-all:
-	@$(MAKE) -f $(THIS_FILE) docker
-	@$(MAKE) -f $(THIS_FILE) docker-deb
+	$(MAKE) -f $(THIS_FILE) docker
+	$(MAKE) -f $(THIS_FILE) docker-deb
 
 docker: docker-clean
 	docker build --tag $(APP)-rpm:$(RHEL_VERSION) .
@@ -122,11 +128,9 @@ docker: docker-clean
 		-e PKG_RELEASE=$(PKG_RELEASE) -e VERSION=$(VERSION) \
                 -e RHEL_VERSION=$(RHEL_VERSION) \
 		$(APP)-rpm:$(RHEL_VERSION) make build
-	docker run --volumes-from $(APP)-rpm-$(RHEL_VERSION)-data --rm \
-		-v /tmp:/host:rw \
-		$(APP)-rpm:$(RHEL_VERSION) cp /data/build/$(RPM_NAME) /host/
-	@ cp /tmp/$(RPM_NAME) build/
-	@ docker rm $(APP)-rpm-$(RHEL_VERSION)-data 2>&1 >/dev/null
+	docker cp $(APP)-rpm-$(RHEL_VERSION)-data:/data/build/$(RPM_NAME) /tmp/
+	cp /tmp/$(RPM_NAME) build/
+	docker rm $(APP)-rpm-$(RHEL_VERSION)-data 2>&1 >/dev/null
 
 docker-clean:
 	docker inspect $(APP)-rpm-$(RHEL_VERSION)-data >/dev/null 2>&1 && \
@@ -140,11 +144,9 @@ docker-deb: docker-deb-clean
                 -e RHEL_VERSION=$(RHEL_VERSION) \
                 -e DEB_NAME=$(DEB_NAME) \
 		$(APP)-deb:$(RHEL_VERSION) fakeroot alien --to-deb --scripts /data/build/$(RPM_NAME)
-	docker run --volumes-from $(APP)-deb-$(RHEL_VERSION)-data --rm \
-		-v /tmp:/host:rw \
-		$(APP)-deb:$(RHEL_VERSION) cp /data/$(DEB_NAME) /host/
-	@ cp /tmp/$(DEB_NAME) build/
-	@ docker rm $(APP)-deb-$(RHEL_VERSION)-data 2>&1 >/dev/null
+	docker cp $(APP)-deb-$(RHEL_VERSION)-data:/data/$(DEB_NAME) /tmp/
+	cp /tmp/$(DEB_NAME) build/
+	docker rm $(APP)-deb-$(RHEL_VERSION)-data 2>&1 >/dev/null
 
 docker-deb-clean:
 	docker inspect $(APP)-deb-$(RHEL_VERSION)-data >/dev/null 2>&1 && \

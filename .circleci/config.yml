@@ -1,0 +1,92 @@
+version: 2.1
+
+orbs:
+  nexus-platform-orb: sonatype/nexus-platform-orb@1.0.2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            if [[ $CIRCLE_SHELL_ENV == *"localbuild"* ]]; then
+              echo "This is a local build. Enabling sudo for docker"
+              echo sudo > ~/sudo
+            else
+              echo "This is not a local build. Disabling sudo for docker"
+              touch ~/sudo
+            fi
+            eval `cat ~/sudo` make docker-all
+            export RPM_NAME=`make show-rpm-name`
+            export DEB_NAME=`make show-deb-name`
+            echo RPM_NAME: $RPM_NAME
+            echo DEB_NAME: $DEB_NAME
+            echo export RPM_NAME="${RPM_NAME}" >> "$BASH_ENV"
+            echo export DEB_NAME="${DEB_NAME}" >> "$BASH_ENV"
+
+  build_and_deploy:
+    docker:
+      - image: circleci/openjdk:8
+    #environment:
+      #NEXUS_RM_SERVERURL: http://192.168.1.174:8081/repository/
+      #REPOSITORY_NAME_YUM: yum-hosted
+      #REPOSITORY_NAME_APT: apt-hosted
+      #NEXUS_RM_ATTRIBUTES: "-C foo=bar -A baz=bot"
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            if [[ $CIRCLE_SHELL_ENV == *"localbuild"* ]]; then
+              echo "This is a local build. Enabling sudo for docker"
+              echo sudo > ~/sudo
+            else
+              echo "This is not a local build. Disabling sudo for docker"
+              touch ~/sudo
+            fi
+            eval `cat ~/sudo` make docker-all
+            export RPM_NAME=`make show-rpm-name`
+            export DEB_NAME=`make show-deb-name`
+            echo RPM_NAME: $RPM_NAME
+            echo DEB_NAME: $DEB_NAME
+            echo export RPM_NAME="${RPM_NAME}" >> "$BASH_ENV"
+            echo export DEB_NAME="${DEB_NAME}" >> "$BASH_ENV"
+
+            curl -v --user ${NEXUS_RM_USERNAME_YUM}:${NEXUS_RM_PASSWORD_YUM} --upload-file build/${RPM_NAME} ${NEXUS_RM_SERVERURL}${REPOSITORY_NAME_YUM}/
+
+            curl -v --user ${NEXUS_RM_USERNAME_APT}:${NEXUS_RM_PASSWORD_APT} -H "Content-Type: multipart/form-data" --data-binary "@build/${DEB_NAME}" ${NEXUS_RM_SERVERURL}${REPOSITORY_NAME_APT}/
+
+#      - store_artifacts:
+#          path: build/
+
+#      - nexus-platform-orb/install
+#
+#      - run:
+#          command: |
+#            mv NexusPublisher.groovy-bak NexusPublisher.groovy
+#            ls -alh ./NexusPublisher.groovy
+#
+#      - nexus-platform-orb/publish:
+#          serverurl: ${NEXUS_RM_SERVERURL}
+#          repository: yum-hosted
+#          format: yum
+#          filename: build/${RPM_NAME}
+#          attributes: ${NEXUS_RM_ATTRIBUTES}
+
+workflows:
+  deploy_staging:
+    jobs:
+      - build_and_deploy:
+          context: installer-deploy-staging
+
+#  orb-deploy:
+#    jobs:
+#      - build
+#      - nexus-platform-orb/nexusjob:
+#          requires:
+#            - build
+#          filename: build/${RPM_NAME}
+#          attributes: ${NEXUS_RM_ATTRIBUTES}
