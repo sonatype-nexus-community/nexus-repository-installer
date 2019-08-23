@@ -90,6 +90,7 @@ workflows:
   deploy_staging:
     jobs:
       - build_and_deploy:
+          type: approval
           context: installer-deploy-staging
 
 #  orb-deploy:
