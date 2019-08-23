@@ -3,6 +3,8 @@ About
 
 Package Nexus Repository Manager 3 as an RPM and DEB.
 
+[![CircleCI](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer.svg?style=svg)](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer)
+
 Overview
 --------
 
