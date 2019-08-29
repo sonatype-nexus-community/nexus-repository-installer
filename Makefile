@@ -71,6 +71,9 @@ rpm-clean:
 	rm -rf $(RPMDIR)
 
 build: rpm $(BUILDDIR)/$(RPM_NAME)
+ifeq ($(SIGN_RPM),true)
+	./rpm/signrpm.sh $(RPM_NAME)
+endif
 
 
 # retrieve the original bundle from FETCH_URL
@@ -100,12 +103,12 @@ $(RPMDIR)/SOURCES/$(BUNDLE_FILE):
 	cp $(BUILDDIR)/$(BUNDLE_FILE) $@
 
 # create the SPEC file from template
-$(RPMDIR)/SPECS/$(APP).spec: $(APP).spec
+$(RPMDIR)/SPECS/$(APP).spec: rpm/$(APP).spec
 	sed \
 	-e "s|%%RELEASE%%|$(PKG_RELEASE)|" \
 	-e "s|%%VERSION%%|$(PKG_VERSION)|" \
 	-e "s|%%BUNDLE_FILE%%|$(BUNDLE_FILE)|" \
-	$(APP).spec > $@
+	rpm/$(APP).spec > $@
 
 # create the rpm
 $(RPMDIR)/RPMS/noarch/$(RPM_NAME):
@@ -122,12 +125,16 @@ docker-all:
 	$(MAKE) -f $(THIS_FILE) docker-deb
 
 docker: docker-clean
-	docker build --tag $(APP)-rpm:$(RHEL_VERSION) .
+	docker build -f rpm/Dockerfile --tag $(APP)-rpm:$(RHEL_VERSION) .
 	docker run --name $(APP)-rpm-$(RHEL_VERSION)-data $(APP)-rpm:$(RHEL_VERSION) echo "data only container"
-	docker run --volumes-from $(APP)-rpm-$(RHEL_VERSION)-data --rm \
+	@ docker run --volumes-from $(APP)-rpm-$(RHEL_VERSION)-data --rm \
 		-e PKG_RELEASE=$(PKG_RELEASE) -e VERSION=$(VERSION) \
                 -e RHEL_VERSION=$(RHEL_VERSION) \
-		$(APP)-rpm:$(RHEL_VERSION) make build
+                -e GNUPGHOME=$(GNUPGHOME) \
+                -e SECRING_GPG_ASC_BASE64=$(value SECRING_GPG_ASC_BASE64) \
+                -e GPG_KEY_EMAIL=$(value GPG_KEY_EMAIL) \
+                -e GPG_PASSPHRASE=$(value GPG_PASSPHRASE) \
+		$(APP)-rpm:$(RHEL_VERSION) make build SIGN_RPM=$(SIGN_RPM)
 	docker cp $(APP)-rpm-$(RHEL_VERSION)-data:/data/build/$(RPM_NAME) /tmp/
 	cp /tmp/$(RPM_NAME) build/
 	docker rm $(APP)-rpm-$(RHEL_VERSION)-data 2>&1 >/dev/null

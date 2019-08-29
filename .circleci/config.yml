@@ -47,7 +47,8 @@ jobs:
               echo "This is not a local build. Disabling sudo for docker"
               touch ~/sudo
             fi
-            eval `cat ~/sudo` make docker-all
+            export GNUPGHOME=./build/rpm-signing-keys/uhome
+            eval `cat ~/sudo` make docker-all SIGN_RPM=true GNUPGHOME="${GNUPGHOME}" SECRING_GPG_ASC_BASE64="${SECRING_GPG_ASC_BASE64}" GPG_KEY_EMAIL="${GPG_KEY_EMAIL}" GPG_PASSPHRASE="${GPG_PASSPHRASE}"
             export RPM_NAME=`make show-rpm-name`
             export DEB_NAME=`make show-deb-name`
             echo RPM_NAME: $RPM_NAME

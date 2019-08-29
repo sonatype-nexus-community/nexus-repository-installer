@@ -14,7 +14,7 @@ You can specify the bundle version to download by setting the `VERSION` environm
 The RPM will be written to `./build`.
 
 The DEB is generated from the RPM using the [alien](https://wiki.debian.org/Alien) command in another docker container.
-This is why you will see a number of `elif` commands in the `%pre`, `%post`, and `%preun` sections of the [.spec](nexus-repository-manager.spec) file,
+This is why you will see a number of `elif` commands in the `%pre`, `%post`, and `%preun` sections of the [.spec](rpm/nexus-repository-manager.spec) file,
 to ensure the scriptlets work on both distributions. 
 The DEB will be written to `./build`. 
 
@@ -109,7 +109,7 @@ Looking to contribute, but need some help? There's a few ways to get information
 
 ## Build Installers via CI
 
-  1. Update the version number in `version-to-build.txt` to the new version to be built. e.g.
+  1. Update the version number in [version-to-build.txt](version-to-build.txt) to the new version to be built. e.g.
   
          3.16.2-01
          
@@ -117,6 +117,6 @@ Looking to contribute, but need some help? There's a few ways to get information
      
          3.17.0-01
 
-     Commit and push the updated `version-to-build.txt` file to `master`.
+     Commit and push the updated [version-to-build.txt](version-to-build.txt) file to the `master` branch.
      
   2. After a new build has completed, click the `deploy_staging` or `deploy` workflow.
