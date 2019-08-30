@@ -5,6 +5,39 @@ Package Nexus Repository Manager 3 as an RPM and DEB.
 
 [![CircleCI](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer.svg?style=svg)](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer)
 
+Usage
+--------
+
+Prebuilt binaries of these installers are available from the community 
+[Yum](https://nx-staging.sonatype.com/#browse/browse:community-yum-hosted) and 
+[Apt](https://nx-staging.sonatype.com/#browse/browse:community-apt-hosted) repositories. 
+
+The [community-hosted](https://nx-staging.sonatype.com/#browse/browse:community-hosted) repository provides example 
+Yum configuration (`sonatype-community.repo`) and Apt configuration (`sonatype-community.list`) files, 
+and related public keys under the `pki` folder.
+
+#### Yum setup
+
+  1. Copy the Yum configuration file: [sonatype-community.repo](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.repo)
+     to your `/etc/yum.repos.d/` directory.
+  2. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
+
+         yum install nexus-repository-manager
+              
+#### Apt setup
+
+  1. Copy the Apt configuration file: [sonatype-community.list](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.list)
+     to your `/etc/apt/sources.list.d/` directory.
+  2. (One time setup) Download the [public GPG signing key](https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
+     and add the key to your apt sources keyring:
+     
+         wget https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
+         sudo apt-key add DEB-GPG-KEY-sonatype.asc
+  
+  2. Install the application via apt-get. The first time you use our installer, you will be prompted to install the GPG signing key.
+
+         sudo apt-get install nexus-repository-manager         
+
 Overview
 --------
 
