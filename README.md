@@ -40,7 +40,7 @@ and related public keys under the `pki` folder.
      and add the key to your apt sources keyring:
      
          wget https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
-         sudo apt-key add DEB-GPG-KEY-sonatype.asc
+         sudo apt-key add DEB-GPG-KEY-Sonatype.asc
   
   4. Install the application via apt-get. The first time you use our installer, you will be prompted to install the GPG signing key.
 
