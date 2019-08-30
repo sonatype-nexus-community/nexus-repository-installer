@@ -1,7 +1,7 @@
 version: 2.1
 
-orbs:
-  nexus-platform-orb: sonatype/nexus-platform-orb@1.0.2
+#orbs:
+#  nexus-platform-orb: sonatype/nexus-platform-orb@1.0.2
 
 jobs:
   build:
