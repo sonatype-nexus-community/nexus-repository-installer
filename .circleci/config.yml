@@ -87,6 +87,28 @@ jobs:
 #          filename: build/${RPM_NAME}
 #          attributes: ${NEXUS_RM_ATTRIBUTES}
 
+  read_published_release_version:
+    docker:
+      - image: circleci/openjdk:8
+    steps:
+      - checkout
+      - run:
+          command: |
+            mkdir /tmp/nexus-installer-check
+            wget -q  -O  /tmp/nexus-installer-check/nxrm-page.html https://help.sonatype.com/repomanager3/download
+            # write published release to file for comparison
+            egrep  -o '<span style=.*>Latest Version: (\S*)<\/span>'  /tmp/nexus-installer-check/nxrm-page.html | egrep -oh 'Latest Version: (\S*)<\/span>' | sed 's/Latest Version: //g' | sed 's/<\/span>//g' > /tmp/nexus-installer-recent-version
+            diff /tmp/nexus-installer-recent-version version-to-build.txt > /tmp/nexus-install-version-updated
+            version_latest=`cat /tmp/nexus-installer-recent-version`
+            version_built=`cat version-to-build.txt`
+            if [ -s "$_file" ]
+            then
+              echo "Stale version detected: $version_built. New Nexus Installer ($(version_latest)) needs to be built and published."
+              exit 1
+            else
+              echo "No action required, installer $version_built is up to date."
+            fi
+
 workflows:
   deploy_staging:
     jobs:
@@ -99,6 +121,16 @@ workflows:
           context: installer-deploy-staging
           requires:
             - hold
+  check_for_new_release:
+    triggers:
+      - schedule:
+          cron: "5 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - read_published_release_version
 
 #  orb-deploy:
 #    jobs:
