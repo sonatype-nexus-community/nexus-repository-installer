@@ -110,16 +110,6 @@ jobs:
             fi
 
 workflows:
-  check_for_new_release:
-    triggers:
-      - schedule:
-          cron: "15 * * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - read_published_release_version
   deploy_staging:
     jobs:
       - build
@@ -131,6 +121,16 @@ workflows:
           context: installer-deploy-staging
           requires:
             - hold
+  check_for_new_release:
+    triggers:
+      - schedule:
+          cron: "40 4 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - read_published_release_version
 
 #  orb-deploy:
 #    jobs:
