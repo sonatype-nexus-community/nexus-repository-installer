@@ -124,7 +124,7 @@ workflows:
   check_for_new_release:
     triggers:
       - schedule:
-          cron: "5 * * * *"
+          cron: "5 20 * * *"
           filters:
             branches:
               only:
