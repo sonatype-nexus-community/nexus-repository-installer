@@ -94,19 +94,19 @@ jobs:
       - checkout
       - run:
           command: |
-            mkdir /tmp/nexus-installer-check
-            wget -q  -O  /tmp/nexus-installer-check/nxrm-page.html https://help.sonatype.com/repomanager3/download
-            # write published release to file for comparison
-            egrep  -o '<span style=.*>Latest Version: (\S*)<\/span>'  /tmp/nexus-installer-check/nxrm-page.html | egrep -oh 'Latest Version: (\S*)<\/span>' | sed 's/Latest Version: //g' | sed 's/<\/span>//g' > /tmp/nexus-installer-recent-version
-            diff /tmp/nexus-installer-recent-version version-to-build.txt > /tmp/nexus-install-version-updated
-            version_latest=`cat /tmp/nexus-installer-recent-version`
-            version_built=`cat version-to-build.txt`
-            if [ -s "$_file" ]
+            # extract latest published release version
+            RAW_HTML=$(wget -qO- https://help.sonatype.com/repomanager3/download)
+            VERSION_LATEST=$(echo $RAW_HTML | egrep  -o '<span style=.*>Latest Version: (\S*)<\/span>' | egrep -oh 'Latest Version: (\S*)<\/span>' | sed 's/Latest Version: //g' | sed 's/<\/span>//g')
+            echo "VERSION_LATEST: $VERSION_LATEST"
+
+            VERSION_BUILT=`cat version-to-build.txt`
+            echo "VERSION_BUILT: $VERSION_BUILT"
+            if [ "$VERSION_LATEST" = "$VERSION_BUILT" ]
             then
-              echo "Stale version detected: $version_built. New Nexus Installer ($(version_latest)) needs to be built and published."
-              exit 1
+              echo "No action required, installer $VERSION_BUILT is up to date."
             else
-              echo "No action required, installer $version_built is up to date."
+              echo "Stale version detected: $VERSION_BUILT. New Nexus Installer ($VERSION_LATEST) needs to be built and published."
+              exit 1
             fi
 
 workflows:
