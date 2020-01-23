@@ -1,7 +1,13 @@
 version: 2.1
 
-#orbs:
-#  nexus-platform-orb: sonatype/nexus-platform-orb@1.0.2
+commands:
+  configure-git:
+    steps:
+      - run:
+          name: Configure GIT with user info for pushing
+          command: |
+            git config user.name "$GITHUB_USERNAME"
+            git config user.email "$GITHUB_EMAIL"
 
 jobs:
   build:
@@ -30,11 +36,6 @@ jobs:
   build_and_deploy:
     docker:
       - image: circleci/openjdk:8
-    #environment:
-      #NEXUS_RM_SERVERURL: http://192.168.1.174:8081/repository/
-      #REPOSITORY_NAME_YUM: yum-hosted
-      #REPOSITORY_NAME_APT: apt-hosted
-      #NEXUS_RM_ATTRIBUTES: "-C foo=bar -A baz=bot"
     steps:
       - checkout
       - setup_remote_docker
@@ -70,28 +71,12 @@ jobs:
               exit 2
             fi
 
-#      - store_artifacts:
-#          path: build/
-
-#      - nexus-platform-orb/install
-#
-#      - run:
-#          command: |
-#            mv NexusPublisher.groovy-bak NexusPublisher.groovy
-#            ls -alh ./NexusPublisher.groovy
-#
-#      - nexus-platform-orb/publish:
-#          serverurl: ${NEXUS_RM_SERVERURL}
-#          repository: yum-hosted
-#          format: yum
-#          filename: build/${RPM_NAME}
-#          attributes: ${NEXUS_RM_ATTRIBUTES}
-
   read_published_release_version:
     docker:
       - image: circleci/openjdk:8
     steps:
       - checkout
+      - configure-git
       - run:
           command: |
             # extract latest published release version
@@ -106,6 +91,11 @@ jobs:
               echo "No action required, installer $VERSION_BUILT is up to date."
             else
               echo "Stale version detected: $VERSION_BUILT. New Nexus Installer ($VERSION_LATEST) needs to be built and published."
+              # write new version to build to disk, commit with trigger tag, and push changes to git
+              echo "$VERSION_LATEST" > version-to-build.txt
+              git commit version-to-build.txt -m "[skip ci] Automated update to build new version: $VERSION_LATEST"
+              git tag "build_new_version_$VERSION_LATEST" -m "Tag to trigger automated build of new version: $VERSION_LATEST"
+              git push && git push --tags
               exit 1
             fi
 
@@ -121,6 +111,7 @@ workflows:
           context: installer-deploy-staging
           requires:
             - hold
+
   check_for_new_release:
     triggers:
       - schedule:
@@ -130,13 +121,21 @@ workflows:
               only:
                 - master
     jobs:
-      - read_published_release_version
+      - read_published_release_version:
+          ssh-fingerprints: "25:b0:d0:3a:48:c9:02:01:66:d3:ae:3b:bb:b8:42:4a"
+          context: installer-deploy-staging
 
-#  orb-deploy:
-#    jobs:
-#      - build
-#      - nexus-platform-orb/nexusjob:
-#          requires:
-#            - build
-#          filename: build/${RPM_NAME}
-#          attributes: ${NEXUS_RM_ATTRIBUTES}
+  build_new_release_on_tag:
+    jobs:
+      - build:
+          filters:  # required since `build_and_deploy` has tag filters AND requires `build`
+            tags:
+              only: /.*/
+      - build_and_deploy:
+          context: installer-deploy-staging
+          filters:
+            tags:
+              only: /^build_new_version_.*/
+          requires:
+            - build
+
