@@ -135,16 +135,13 @@ workflows:
     jobs:
       - build:
           filters:
-            # ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
             # required since `build_and_deploy` has tag filters AND requires `build`
             tags:
               only: /.*/
       - build_and_deploy:
           context: installer-deploy-staging
           filters:
-            # ignore any commit on any branch by default
+            # ignore any commit on any branch by default (branch and tag filters are ORed)
             branches:
               ignore: /.*/
             tags:
