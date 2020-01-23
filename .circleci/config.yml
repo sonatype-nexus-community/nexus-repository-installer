@@ -17,6 +17,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Build RPM and DEB
           command: |
             if [[ $CIRCLE_SHELL_ENV == *"localbuild"* ]]; then
               echo "This is a local build. Enabling sudo for docker"
@@ -40,6 +41,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Build RPM and DEB then deploy
           command: |
             if [[ $CIRCLE_SHELL_ENV == *"localbuild"* ]]; then
               echo "This is a local build. Enabling sudo for docker"
@@ -81,6 +83,7 @@ jobs:
       - checkout
       - configure-git
       - run:
+          name: Check published version
           command: |
             # extract latest published release version
             RAW_HTML=$(wget -qO- https://help.sonatype.com/repomanager3/download)
