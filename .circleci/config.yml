@@ -134,18 +134,19 @@ workflows:
   build_new_release_on_tag:
     jobs:
       - build:
-          filters:  # required since `build_and_deploy` has tag filters AND requires `build`
+          filters:
+            # ignore any commit on any branch by default
             branches:
-              only:
-                - master
+              ignore: /.*/
+            # required since `build_and_deploy` has tag filters AND requires `build`
             tags:
               only: /.*/
       - build_and_deploy:
           context: installer-deploy-staging
           filters:
+            # ignore any commit on any branch by default
             branches:
-              only:
-                - master
+              ignore: /.*/
             tags:
               only: /^build_new_version_.*/
           requires:
