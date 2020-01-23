@@ -74,6 +74,9 @@ jobs:
   read_published_release_version:
     docker:
       - image: circleci/openjdk:8
+    parameters:
+      ssh-fingerprints:
+        type: string
     steps:
       - checkout
       - configure-git
