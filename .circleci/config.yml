@@ -80,6 +80,9 @@ jobs:
       ssh-fingerprints:
         type: string
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - <<parameters.ssh-fingerprints>>
       - checkout
       - configure-git
       - run:
