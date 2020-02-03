@@ -3,6 +3,8 @@ About
 
 Package Nexus Repository Manager 3 as an RPM and DEB.
 
+(You may also be interested in the [Nexus IQ Server installer](https://github.com/sonatype-nexus-community/nexus-iq-server-installer) project.)
+
 [![CircleCI](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer.svg?style=svg)](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer)
 
 Usage
