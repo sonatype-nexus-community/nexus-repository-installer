@@ -1,0 +1,7 @@
+[sonatype-community]
+name=Sonatype Community
+baseurl=https://nx-staging.sonatype.com/repository/community-yum-hosted/
+enabled=1
+gpgcheck=1
+gpgkey=https://nx-staging.sonatype.com/repository/community-hosted/pki/rpm-gpg/RPM-GPG-KEY-Sonatype.asc
+priority=1
