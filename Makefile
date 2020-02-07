@@ -26,7 +26,8 @@ BUILDDIR ?= $(BASEDIR)/build
 
 RPMDIR := $(BUILDDIR)/rpmbuild
 
-RPM_NAME := $(APP)-$(PKG_VERSION)-$(PKG_RELEASE).noarch.rpm
+RPM_BASENAME := $(APP)-$(PKG_VERSION)
+RPM_NAME := $(RPM_BASENAME)-$(PKG_RELEASE).noarch.rpm
 DEB_NAME := $(APP)_$(DEB_VERSION)-2_all.deb
 
 # create lists of patchfiles and where to install them
@@ -150,7 +151,7 @@ docker-deb: docker-deb-clean
 	docker run --volumes-from $(APP)-deb-$(RHEL_VERSION)-data --rm \
                 -e RHEL_VERSION=$(RHEL_VERSION) \
                 -e DEB_NAME=$(DEB_NAME) \
-		$(APP)-deb:$(RHEL_VERSION) fakeroot alien --to-deb --scripts /data/build/$(RPM_NAME)
+		$(APP)-deb:$(RHEL_VERSION) fakeroot deb/run-alien.sh $(RPM_BASENAME) $(RPM_NAME)
 	docker cp $(APP)-deb-$(RHEL_VERSION)-data:/data/$(DEB_NAME) /tmp/
 	cp /tmp/$(DEB_NAME) build/
 	docker rm $(APP)-deb-$(RHEL_VERSION)-data 2>&1 >/dev/null

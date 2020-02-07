@@ -3,6 +3,7 @@ Version:	%%VERSION%%
 Release:	%%RELEASE%%
 Summary:	Nexus Repository Manager 3
 License:	Proprietary
+Requires:       java-1.8.0-openjdk-headless
 URL:		https://www.sonatype.com
 Source0:	%%BUNDLE_FILE%%
 Source1:        %{name}-%{version}-rpm.tar.gz
