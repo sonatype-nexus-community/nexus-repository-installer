@@ -20,10 +20,6 @@ and related public keys under the `pki` folder.
 
 #### Yum setup
 
-  1. (One-time setup) If you don't already have JDK 8 installed, then install OpenJDK 8 JDK:
-  
-         yum install java-1.8.0-openjdk
-
   2. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.repo)
      to your `/etc/yum.repos.d/` directory.
   3. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
@@ -31,10 +27,6 @@ and related public keys under the `pki` folder.
          yum install nexus-repository-manager
               
 #### Apt setup
-
-  1. (One-time setup) If you don't already have JDK 8 installed, then install OpenJDK 8 JDK:
-  
-         sudo apt-get install openjdk-8-jdk
 
   2. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.list)
      to your `/etc/apt/sources.list.d/` directory.
