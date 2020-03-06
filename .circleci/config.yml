@@ -116,10 +116,18 @@ workflows:
           type: approval
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - master
       - build_and_deploy:
           context: installer-deploy-staging
           requires:
             - hold
+          filters:
+            branches:
+              only:
+                - master
 
   check_for_new_release:
     triggers:
