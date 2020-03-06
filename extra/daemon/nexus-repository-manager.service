@@ -1,0 +1,14 @@
+[Unit]
+Description=Nexus Repository Manager 3 Service
+After=network.target
+
+[Service]
+Type=forking
+LimitNOFILE=65536
+ExecStart=/opt/sonatype/nexus3/bin/nexus start
+ExecStop=/opt/sonatype/nexus3/bin/nexus stop
+User=nexus3
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

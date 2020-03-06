@@ -64,7 +64,7 @@ show-deb-name:
 
 fetch: $(BUILDDIR) $(BUILDDIR)/$(BUNDLE_FILE)
 
-populate: fetch $(rpm_subdirs) $(dest_patchfiles) $(RPMDIR)/SOURCES/$(BUNDLE_FILE) $(RPMDIR)/SPECS/$(APP).spec
+populate: fetch $(rpm_subdirs) $(dest_patchfiles) $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm-extra.tar.gz $(RPMDIR)/SOURCES/$(BUNDLE_FILE) $(RPMDIR)/SPECS/$(APP).spec
 
 rpm: populate $(RPMDIR)/RPMS/noarch/$(RPM_NAME)
 
@@ -87,13 +87,13 @@ $(rpm_subdirs):
 	mkdir -p $@
 
 # create Source2 tarball (./extra)
-#$(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz:
-#	tar -cz --exclude .gitignore -f $@ extra
+$(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm-extra.tar.gz:
+	tar -cz --exclude .gitignore -f $@ extra
 
-# create Source tarball
-$(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz:
-	/bin/ls -alhR
-	tar -cz --exclude .gitignore -f $@
+# # create Source tarball
+# $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz:
+# 	/bin/ls -alhR
+# 	tar -cz --exclude .gitignore -f $@
 
 # copy patches to SOURCES
 $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-%.patch: patches/%.patch
