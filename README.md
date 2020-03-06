@@ -136,6 +136,14 @@ Looking to contribute, but need some help? There's a few ways to get information
       
   This will provide tons of information about what the installer is doing.
   
+<!--
+* There are Docker files for use in testing of .rpm and .deb installers. No Joy here yet. Test in VirtualBox, et al.
+
+      docker build -t test-rpm -f rpm/test-rpm.dockerfile . && docker run --privileged -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro test-rpm /usr/sbin/init
+      
+      docker build -t test-deb -f deb/test-deb.dockerfile . && docker run --privileged -it test-deb
+-->
+  
 * CI local debug - you can run a local ci build using the following:
 
       circleci config process .circleci/config.yml > .circleci/local-config.yml  \
