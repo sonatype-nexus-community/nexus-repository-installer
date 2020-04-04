@@ -38,7 +38,7 @@ and related public keys under the `pki` folder.
   
   3. Install the application via apt-get.
 
-         sudo apt-get install nexus-repository-manager         
+         sudo apt-get update && sudo apt-get install nexus-repository-manager         
 
 Overview
 --------
