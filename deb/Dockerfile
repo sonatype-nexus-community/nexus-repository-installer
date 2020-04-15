@@ -11,9 +11,7 @@ FROM debian:stable
 RUN apt-get update && apt-get install -y alien
 
 COPY . /data
-
 RUN chown -R nobody /data/*
-
 VOLUME /data
 
 #USER nobody
