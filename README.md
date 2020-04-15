@@ -20,7 +20,7 @@ and related public keys under the `pki` folder.
 
 #### Yum setup
 
-  1. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.repo)
+  1. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://nx-staging.sonatype.com/repository/community-hosted/rpm/sonatype-community.repo)
      to your `/etc/yum.repos.d/` directory.
   2. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
 
@@ -28,7 +28,7 @@ and related public keys under the `pki` folder.
               
 #### Apt setup
 
-  1. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.list)
+  1. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://nx-staging.sonatype.com/repository/community-hosted/deb/sonatype-community.list)
      to your `/etc/apt/sources.list.d/` directory.
   2. (One-time setup) Download the [public GPG signing key](https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
      and add the key to your apt sources keyring:
