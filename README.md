@@ -165,3 +165,7 @@ Looking to contribute, but need some help? There's a few ways to get information
   2. After a new build has completed, click the `deploy_staging` or `deploy` workflow.
 
    <!-- @todo Add 'deploy' workflow to deploy to production NXRM3 -->
+
+## Server Setup
+
+  See: [Static Config Files - Readme](package-manager-configs/README.md) for notes about server setup.
