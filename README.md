@@ -11,16 +11,16 @@ Usage
 --------
 
 Prebuilt binaries of these installers are available from the community 
-[Yum](https://nx-staging.sonatype.com/#browse/browse:community-yum-hosted) and 
-[Apt](https://nx-staging.sonatype.com/#browse/browse:community-apt-hosted) repositories. 
+[Yum](https://repo.sonatype.com/#browse/browse:community-yum-hosted) and 
+[Apt](https://repo.sonatype.com/#browse/browse:community-apt-hosted) repositories. 
 
-The [community-hosted](https://nx-staging.sonatype.com/#browse/browse:community-hosted) repository provides example 
+The [community-hosted](https://repo.sonatype.com/#browse/browse:community-hosted) repository provides example 
 Yum configuration (`sonatype-community.repo`) and Apt configuration (`sonatype-community.list`) files, 
 and related public keys under the `pki` folder.
 
 #### Yum setup
 
-  1. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://nx-staging.sonatype.com/repository/community-hosted/rpm/sonatype-community.repo)
+  1. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://repo.sonatype.com/repository/community-hosted/rpm/sonatype-community.repo)
      to your `/etc/yum.repos.d/` directory.
   2. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
 
@@ -28,12 +28,12 @@ and related public keys under the `pki` folder.
               
 #### Apt setup
 
-  1. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://nx-staging.sonatype.com/repository/community-hosted/deb/sonatype-community.list)
+  1. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://repo.sonatype.com/repository/community-hosted/deb/sonatype-community.list)
      to your `/etc/apt/sources.list.d/` directory.
-  2. (One-time setup) Download the [public GPG signing key](https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
+  2. (One-time setup) Download the [public GPG signing key](https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
      and add the key to your apt sources keyring:
      
-         wget https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
+         wget https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
          sudo apt-key add DEB-GPG-KEY-Sonatype.asc
   
   3. Install the application via apt-get.
