@@ -209,8 +209,14 @@ jobs:
           name: Check published version
           command: |
             # extract latest published release version
-            RAW_HTML=$(wget -qO- https://help.sonatype.com/repomanager3/download)
-            VERSION_LATEST=$(echo $RAW_HTML | egrep  -o '<span style=.*>Latest Version: (\S*)<\/span>' | egrep -oh 'Latest Version: (\S*)<\/span>' | sed 's/Latest Version: //g' | sed 's/<\/span>//g')
+            VERSION_LATEST=$(curl -sI https://download.sonatype.com/nexus/3/latest-unix.tar.gz -w "%{redirect_url}" | tail -1 | sed 's/.*nexus-\(.*\)-unix.*/\1/')
+
+            if [ "x${VERSION_LATEST}" = "x" ]
+            then
+              echo "Failed to determine latest version.."
+              exit 1
+            fi
+
             echo "VERSION_LATEST: $VERSION_LATEST"
 
             VERSION_BUILT=`cat version-to-build.txt`
