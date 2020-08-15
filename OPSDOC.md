@@ -1,6 +1,6 @@
 # Nexus Repository Installer
 
-The purpose of this repository is to create Deb and Rpm packages of Nexus. 
+The purpose of this repository is to create Deb and Rpm packages of NXRM.
 
 
 
@@ -59,6 +59,5 @@ This runs the same steps as *build* with the addition of deploying the packages 
 2. deploys deb to staging
 3. deploys rpm to production
 4. deploys deb to staging
-
 
 
