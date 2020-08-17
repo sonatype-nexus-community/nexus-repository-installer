@@ -58,6 +58,6 @@ This runs the same steps as *build* with the addition of deploying the packages 
 1. deploys rpm to staging
 2. deploys deb to staging
 3. deploys rpm to production
-4. deploys deb to staging
+4. deploys deb to production
 
 
