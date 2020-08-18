@@ -1,2 +1,0 @@
-deb [arch=all] https://repo.sonatype.com/repository/community-apt-hosted-staging/ bionic main
-#deb https://repo.sonatype.com/repository/community-apt-hosted-staging/ bionic main
