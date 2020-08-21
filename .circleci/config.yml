@@ -31,27 +31,6 @@ commands:
               exit 1
             fi
 
-  deploy-rpm-staging:
-    parameters:
-      username:
-        type: string
-        default: $NEXUS_RM_USERNAME_YUM_STAGING
-      password:
-        type: string
-        default: $NEXUS_RM_PASSWORD_YUM_STAGING
-      serverurl:
-        type: string
-        default: $NEXUS_RM_SERVERURL_STAGING
-      repository-name:
-        type: string
-        default: $REPOSITORY_NAME_YUM_STAGING
-    steps:
-      - deploy-rpm:
-          username: << parameters.username >>
-          password: << parameters.password >>
-          serverurl: << parameters.serverurl >>
-          repository-name: << parameters.repository-name >>
-
   deploy-rpm-production:
     parameters:
       username:
@@ -94,27 +73,6 @@ commands:
               echo "the apt curl command failed with: $res"
               exit 2
             fi
-
-  deploy-deb-staging:
-    parameters:
-      username:
-        type: string
-        default: $NEXUS_RM_USERNAME_APT_STAGING
-      password:
-        type: string
-        default: $NEXUS_RM_PASSWORD_APT_STAGING
-      serverurl:
-        type: string
-        default: $NEXUS_RM_SERVERURL_STAGING
-      repository-name:
-        type: string
-        default: $REPOSITORY_NAME_APT_STAGING
-    steps:
-      - deploy-deb:
-          username: << parameters.username >>
-          password: << parameters.password >>
-          serverurl: << parameters.serverurl >>
-          repository-name: << parameters.repository-name >>
 
   deploy-deb-production:
     parameters:
@@ -188,8 +146,6 @@ jobs:
             echo export RPM_NAME="${RPM_NAME}" >> "$BASH_ENV"
             echo export DEB_NAME="${DEB_NAME}" >> "$BASH_ENV"
 
-      - deploy-rpm-staging
-      - deploy-deb-staging
       - deploy-rpm-production
       - deploy-deb-production
 
