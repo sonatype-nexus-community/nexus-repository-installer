@@ -3,48 +3,42 @@ About
 
 Package Nexus Repository Manager 3 as an RPM and DEB.
 
-[![CircleCI](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer.svg?style=svg)](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer)
+(You may also be interested in the [Nexus IQ Server installer](https://github.com/sonatype-nexus-community/nexus-iq-server-installer) project.)
+
+[![CircleCI Build Status](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/sonatype-nexus-community/nexus-repository-installer) 
 
 Usage
 --------
 
 Prebuilt binaries of these installers are available from the community 
-[Yum](https://nx-staging.sonatype.com/#browse/browse:community-yum-hosted) and 
-[Apt](https://nx-staging.sonatype.com/#browse/browse:community-apt-hosted) repositories. 
+[Yum](https://repo.sonatype.com/#browse/browse:community-yum-hosted) and 
+[Apt](https://repo.sonatype.com/#browse/browse:community-apt-hosted) repositories. 
 
-The [community-hosted](https://nx-staging.sonatype.com/#browse/browse:community-hosted) repository provides example 
+The [community-hosted](https://repo.sonatype.com/#browse/browse:community-hosted) repository provides example 
 Yum configuration (`sonatype-community.repo`) and Apt configuration (`sonatype-community.list`) files, 
 and related public keys under the `pki` folder.
 
 #### Yum setup
 
-  1. (One-time setup) If you don't already have JDK 8 installed, then install OpenJDK 8 JDK:
-  
-         yum install java-1.8.0-openjdk
-
-  2. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.repo)
+  1. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://repo.sonatype.com/repository/community-hosted/rpm/sonatype-community.repo)
      to your `/etc/yum.repos.d/` directory.
-  3. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
+  2. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
 
          yum install nexus-repository-manager
               
 #### Apt setup
 
-  1. (One-time setup) If you don't already have JDK 8 installed, then install OpenJDK 8 JDK:
-  
-         sudo apt-get install openjdk-8-jdk
-
-  2. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://nx-staging.sonatype.com/repository/community-hosted/sonatype-community.list)
+  1. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://repo.sonatype.com/repository/community-hosted/deb/sonatype-community.list)
      to your `/etc/apt/sources.list.d/` directory.
-  3. (One-time setup) Download the [public GPG signing key](https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
+  2. (One-time setup) Download the [public GPG signing key](https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
      and add the key to your apt sources keyring:
      
-         wget https://nx-staging.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
+         wget https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
          sudo apt-key add DEB-GPG-KEY-Sonatype.asc
   
-  4. Install the application via apt-get.
+  3. Install the application via apt-get.
 
-         sudo apt-get install nexus-repository-manager         
+         sudo apt-get update && sudo apt-get install nexus-repository-manager         
 
 Overview
 --------
@@ -142,6 +136,14 @@ Looking to contribute, but need some help? There's a few ways to get information
       
   This will provide tons of information about what the installer is doing.
   
+<!--
+* There are Docker files for use in testing of .rpm and .deb installers. No Joy here yet. Test in VirtualBox, et al.
+
+      docker build -t test-rpm -f rpm/test-rpm.dockerfile . && docker run --privileged -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro test-rpm /usr/sbin/init
+      
+      docker build -t test-deb -f deb/test-deb.dockerfile . && docker run --privileged -it test-deb
+-->
+  
 * CI local debug - you can run a local ci build using the following:
 
       circleci config process .circleci/config.yml > .circleci/local-config.yml  \
@@ -160,6 +162,10 @@ Looking to contribute, but need some help? There's a few ways to get information
 
      Commit and push the updated [version-to-build.txt](version-to-build.txt) file to the `master` branch.
      
-  2. After a new build has completed, click the `deploy_staging` or `deploy` workflow.
+  2. After a new build has completed, click the `manual_deploy` workflow.
 
-   <!-- @todo Add 'deploy' workflow to deploy to production NXRM3 -->
+   <!-- @todo verify manual_deploy workflow works with manual tag push. -->
+
+## Server Setup
+
+  See: [Static Config Files - Readme](package-manager-configs/README.md) for notes about server setup.

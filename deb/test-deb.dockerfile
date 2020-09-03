@@ -8,13 +8,12 @@
 #FROM debian:stable-slim
 FROM debian:stable
 #FROM ubuntu:latest
-RUN apt-get update && apt-get install -y alien
+#RUN apt-get update && apt-get install -y alien
 
 COPY . /data
-RUN chown -R nobody /data/*
+
 VOLUME /data
 
-#USER nobody
 WORKDIR /data
-#WORKDIR /tmp
 
+# still can't run systemd in docker image - no joy

@@ -26,7 +26,8 @@ BUILDDIR ?= $(BASEDIR)/build
 
 RPMDIR := $(BUILDDIR)/rpmbuild
 
-RPM_NAME := $(APP)-$(PKG_VERSION)-$(PKG_RELEASE).noarch.rpm
+RPM_BASENAME := $(APP)-$(PKG_VERSION)
+RPM_NAME := $(RPM_BASENAME)-$(PKG_RELEASE).noarch.rpm
 DEB_NAME := $(APP)_$(DEB_VERSION)-2_all.deb
 
 # create lists of patchfiles and where to install them
@@ -63,7 +64,7 @@ show-deb-name:
 
 fetch: $(BUILDDIR) $(BUILDDIR)/$(BUNDLE_FILE)
 
-populate: fetch $(rpm_subdirs) $(dest_patchfiles) $(RPMDIR)/SOURCES/$(BUNDLE_FILE) $(RPMDIR)/SPECS/$(APP).spec
+populate: fetch $(rpm_subdirs) $(dest_patchfiles) $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm-extra.tar.gz $(RPMDIR)/SOURCES/$(BUNDLE_FILE) $(RPMDIR)/SPECS/$(APP).spec
 
 rpm: populate $(RPMDIR)/RPMS/noarch/$(RPM_NAME)
 
@@ -86,13 +87,13 @@ $(rpm_subdirs):
 	mkdir -p $@
 
 # create Source2 tarball (./extra)
-#$(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz:
-#	tar -cz --exclude .gitignore -f $@ extra
+$(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm-extra.tar.gz:
+	tar -cz --exclude .gitignore -f $@ extra
 
-# create Source tarball
-$(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz:
-	/bin/ls -alhR
-	tar -cz --exclude .gitignore -f $@
+# # create Source tarball
+# $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-rpm.tar.gz:
+# 	/bin/ls -alhR
+# 	tar -cz --exclude .gitignore -f $@
 
 # copy patches to SOURCES
 $(RPMDIR)/SOURCES/$(APP)-$(PKG_VERSION)-%.patch: patches/%.patch
@@ -150,7 +151,7 @@ docker-deb: docker-deb-clean
 	docker run --volumes-from $(APP)-deb-$(RHEL_VERSION)-data --rm \
                 -e RHEL_VERSION=$(RHEL_VERSION) \
                 -e DEB_NAME=$(DEB_NAME) \
-		$(APP)-deb:$(RHEL_VERSION) fakeroot alien --to-deb --scripts /data/build/$(RPM_NAME)
+		$(APP)-deb:$(RHEL_VERSION) fakeroot deb/run-alien.sh $(RPM_BASENAME) $(RPM_NAME)
 	docker cp $(APP)-deb-$(RHEL_VERSION)-data:/data/$(DEB_NAME) /tmp/
 	cp /tmp/$(DEB_NAME) build/
 	docker rm $(APP)-deb-$(RHEL_VERSION)-data 2>&1 >/dev/null
