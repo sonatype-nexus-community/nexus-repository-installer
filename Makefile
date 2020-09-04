@@ -139,7 +139,9 @@ docker: docker-clean
                 -e GPG_PASSPHRASE=$(value GPG_PASSPHRASE) \
 		$(APP)-rpm:$(RHEL_VERSION) make build SIGN_RPM=$(SIGN_RPM)
 	docker cp $(APP)-rpm-$(RHEL_VERSION)-data:/data/build/$(RPM_NAME) /tmp/
+	docker cp $(APP)-rpm-$(RHEL_VERSION)-data:/data/build/$(BUNDLE_FILE) /tmp/
 	cp /tmp/$(RPM_NAME) build/
+	cp /tmp/$(BUNDLE_FILE) build/
 	docker rm $(APP)-rpm-$(RHEL_VERSION)-data 2>&1 >/dev/null
 
 docker-clean:
@@ -167,9 +169,10 @@ docker-apk: docker-apk-clean
 	docker build -f apk/Dockerfile --tag $(APP)-apk:$(RHEL_VERSION) .
 	docker run --name $(APP)-apk-$(RHEL_VERSION)-data $(APP)-apk:$(RHEL_VERSION) echo "apk data only container"
 	docker run --volumes-from $(APP)-apk-$(RHEL_VERSION)-data  \
-                -e RHEL_VERSION=$(RHEL_VERSION) \
+                -e APK_VERSION=$(APK_VERSION) \
+                -e BUNDLE_FILE=$(BUNDLE_FILE) \
                 -e APK_NAME=$(APK_NAME) \
-		-it $(APP)-apk:$(RHEL_VERSION) apk/run-abuild.sh $(APK_VERSION)
+		-it $(APP)-apk:$(RHEL_VERSION) apk/run-abuild.sh
 #	docker cp $(APP)-apk-$(RHEL_VERSION)-data:/data/$(APK_NAME) /tmp/
 #	cp /tmp/$(APK_NAME) build/
 #	docker rm $(APP)-apk-$(RHEL_VERSION)-data 2>&1 >/dev/null

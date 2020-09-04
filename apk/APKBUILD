@@ -5,27 +5,29 @@ pkgver="APK_VERSION"
 pkgrel=0
 pkgdesc="Nexus Repository Manager 3"
 url="https://www.sonatype.com"
+bundle="BUNDLE_PATH"
 # arch="all"
 arch="noarch"
 license="Proprietary"
 depends="openjdk8"
 makedepends=""
 install="$pkgname.pre-install $pkgname.post-install $pkgname.pre-deinstall"
-#subpackages="$pkgname-dev $pkgname-doc"
-subpackages=""
-#source="$FETCH_URL"
-source=""
+#source=""
 builddir="$srcdir/"
 
-build() {
-        # Replace with proper build command(s)
-        :
+prepare() {
+	default_prepare
 }
 
-check() {
-        # Replace with proper check command(s)
-        :
+build() {
+        echo "srcdir: $srcdir"
+        tar -xz -f "$bundle"
 }
+
+# check() {
+#         # Replace with proper check command(s)
+#         :
+# }
 
 package() {
         cd "$builddir"
@@ -35,8 +37,8 @@ package() {
         mkdir -p "$pkgdir"
         echo "pkgdir: $pkgdir"
         cd "$pkgdir"
-        touch "somefile-in-pkgdir"
-#         install -m755 "somefile-in-pkgdir" "${pkgdir}"
+        install -m755 "$srcdir/" "${pkgdir}/opt/sonatype/nexus3"
+#         install -m755 "$srcdir/" "${pkgdir}/opt/sonatype/sonatype-work/nexus3"
 
 #         make DESTDIR="$pkgdir" install
 #         install -Dm644 "$srcdir"/zprofile "$pkgdir"/etc/zsh/zprofile
