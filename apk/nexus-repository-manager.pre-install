@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo pre $1
+if [ $1 = 1 ] || [ "$1" = "install" ]; then
+[ -d /opt/sonatype/sonatype-work/nexus3 ] || mkdir -p /opt/sonatype/sonatype-work/nexus3
+# create user account
+getent group nexus3 >/dev/null || groupadd -r nexus3
+getent passwd nexus3 >/dev/null || \
+	useradd -r -g nexus3 -d /opt/sonatype/sonatype-work/nexus3 -m -c "nexus3 role account" -s /bin/bash nexus3
+fi
+# stop the service before upgrading
+if [ $1 = 2 ] || [ "$1" = "upgrade" ]; then
+  if [ ! -f /etc/systemd/system/%{service_name} ]; then
+    # use old init script to stop old service
+    if [ $1 = 2 ]; then
+      /sbin/service nexus3 stop
+    elif [ "$1" = "upgrade" ]; then
+      /usr/sbin/service nexus3 stop
+    fi
+  else
+    systemctl stop %{service_name}
+  fi
+fi

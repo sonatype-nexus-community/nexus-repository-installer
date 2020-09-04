@@ -20,6 +20,7 @@ PKG_RELEASE ?= 1.el$(RHEL_VERSION)
 # The version to assign to the RPM package
 PKG_VERSION := $(shell echo $(VERSION) | sed -e 's|-|_|')
 DEB_VERSION := $(shell echo $(VERSION) | sed -e 's|-||')
+APK_VERSION := $(shell echo $(VERSION) | sed -e 's|-||')
 
 BASEDIR=$(CURDIR)
 BUILDDIR ?= $(BASEDIR)/build
@@ -29,6 +30,7 @@ RPMDIR := $(BUILDDIR)/rpmbuild
 RPM_BASENAME := $(APP)-$(PKG_VERSION)
 RPM_NAME := $(RPM_BASENAME)-$(PKG_RELEASE).noarch.rpm
 DEB_NAME := $(APP)_$(DEB_VERSION)-2_all.deb
+APK_NAME := $(APP)_$(APK_VERSION)-2_all.apk
 
 # create lists of patchfiles and where to install them
 patchfiles := $(wildcard patches/*)
@@ -161,4 +163,20 @@ docker-deb-clean:
 		docker rm $(APP)-deb-$(RHEL_VERSION)-data || \
 		true
 
-.PHONY: help clean fetch populate rpm build docker docker-clean docker-deb docker-deb-clean docker-all
+docker-apk: docker-apk-clean
+	docker build -f apk/Dockerfile --tag $(APP)-apk:$(RHEL_VERSION) .
+	docker run --name $(APP)-apk-$(RHEL_VERSION)-data $(APP)-apk:$(RHEL_VERSION) echo "apk data only container"
+	docker run --volumes-from $(APP)-apk-$(RHEL_VERSION)-data  \
+                -e RHEL_VERSION=$(RHEL_VERSION) \
+                -e APK_NAME=$(APK_NAME) \
+		-it $(APP)-apk:$(RHEL_VERSION) apk/run-abuild.sh $(APK_VERSION)
+#	docker cp $(APP)-apk-$(RHEL_VERSION)-data:/data/$(APK_NAME) /tmp/
+#	cp /tmp/$(APK_NAME) build/
+#	docker rm $(APP)-apk-$(RHEL_VERSION)-data 2>&1 >/dev/null
+
+docker-apk-clean:
+	docker inspect $(APP)-apk-$(RHEL_VERSION)-data >/dev/null 2>&1 && \
+		docker rm $(APP)-apk-$(RHEL_VERSION)-data || \
+		true
+
+.PHONY: help clean fetch populate rpm build docker docker-clean docker-deb docker-deb-clean docker-apk docker-apk-clean docker-all

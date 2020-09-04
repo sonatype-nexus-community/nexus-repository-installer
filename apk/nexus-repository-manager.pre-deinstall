@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo preun $1
+if [ $1 = 0 ] || [ "$1" = "remove" ]; then
+  systemctl stop %{service_name}
+  systemctl disable %{service_name}
+fi

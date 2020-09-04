@@ -1,0 +1,44 @@
+# Contributor: Dan Rollo <drollo@sonatype.com>
+# Maintainer: Sonatype Community <community-group@sonatype.com>
+pkgname=nexus-repository-manager
+pkgver="APK_VERSION"
+pkgrel=0
+pkgdesc="Nexus Repository Manager 3"
+url="https://www.sonatype.com"
+# arch="all"
+arch="noarch"
+license="Proprietary"
+depends="openjdk8"
+makedepends=""
+install="$pkgname.pre-install $pkgname.post-install $pkgname.pre-deinstall"
+#subpackages="$pkgname-dev $pkgname-doc"
+subpackages=""
+#source="$FETCH_URL"
+source=""
+builddir="$srcdir/"
+
+build() {
+        # Replace with proper build command(s)
+        :
+}
+
+check() {
+        # Replace with proper check command(s)
+        :
+}
+
+package() {
+        cd "$builddir"
+        echo "builddir: $builddir"
+        pwd
+
+        mkdir -p "$pkgdir"
+        echo "pkgdir: $pkgdir"
+        cd "$pkgdir"
+        touch "somefile-in-pkgdir"
+#         install -m755 "somefile-in-pkgdir" "${pkgdir}"
+
+#         make DESTDIR="$pkgdir" install
+#         install -Dm644 "$srcdir"/zprofile "$pkgdir"/etc/zsh/zprofile
+#         install -Dm644 LICENCE "$pkgdir"/usr/share/licenses/$pkgname/LICENCE
+}
