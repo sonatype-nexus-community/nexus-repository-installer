@@ -22,6 +22,11 @@ and related public keys under the `pki` folder.
 
   1. (One-time setup) Copy the Yum configuration file: [sonatype-community.repo](https://repo.sonatype.com/repository/community-hosted/rpm/sonatype-community.repo)
      to your `/etc/yum.repos.d/` directory.
+     
+     Or automatically:
+
+         sudo wget -P /etc/yum.repos.d/ https://repo.sonatype.com/repository/community-hosted/rpm/sonatype-community.repo
+     
   2. Install the application via yum. The first time you use our installer, you will be prompted to install the GPG signing key.
 
          yum install nexus-repository-manager
@@ -30,6 +35,11 @@ and related public keys under the `pki` folder.
 
   1. (One-time setup) Copy the Apt configuration file: [sonatype-community.list](https://repo.sonatype.com/repository/community-hosted/deb/sonatype-community.list)
      to your `/etc/apt/sources.list.d/` directory.
+     
+     Or automatically:
+     
+         sudo wget -P /etc/apt/sources.list.d/ https://repo.sonatype.com/repository/community-hosted/deb/sonatype-community.list
+     
   2. (One-time setup) Download the [public GPG signing key](https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
      and add the key to your apt sources keyring:
      
