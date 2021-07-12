@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=forking
 LimitNOFILE=65536
+TasksMax=300
 ExecStart=/opt/sonatype/nexus3/bin/nexus start
 ExecStop=/opt/sonatype/nexus3/bin/nexus stop
 User=nexus3
