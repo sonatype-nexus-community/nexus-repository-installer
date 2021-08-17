@@ -41,11 +41,10 @@ and related public keys under the `pki` folder.
          sudo wget -P /etc/apt/sources.list.d/ https://repo.sonatype.com/repository/community-hosted/deb/sonatype-community.list
      
   2. (One-time setup) Download the [public GPG signing key](https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc)
-     and add the key to your apt sources keyring:
-     
-         wget https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc
-         sudo apt-key add DEB-GPG-KEY-Sonatype.asc
-  
+     and add the key to your apt keyring:
+
+         wget -q -O - https://repo.sonatype.com/repository/community-hosted/pki/deb-gpg/DEB-GPG-KEY-Sonatype.asc | sudo apt-key add -
+
   3. Install the application via apt-get.
 
          sudo apt-get update && sudo apt-get install nexus-repository-manager         
