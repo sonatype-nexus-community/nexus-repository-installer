@@ -36,3 +36,24 @@ Misc
    - export the public key `gpg --armor --output public.gpg.key --export <KEY ID>`
    - upload to the `community-hosted` raw repo as so `curl -u USERNAME:PASSWORD -X PUT -H "Content-Type: application/pgp-signature" -T public.gpg.key https://repo.sonatype.com/repository/community-hosted/pki/deb-
      gpg/DEB-GPG-KEY-Sonatype.asc`
+
+ * CI signing config notes - The .rpm build process must sign the installer. This is done via secure environment variables
+   that are set via a CircleCI context. Here are steps needed to set this up.
+
+   - Encode the signing key to a text string.
+   
+     1. Import the private key
+     
+            gpg --import 2021-private-key.txt
+
+     2. Export the key to .asc format. 
+        Note the command below should prompt you for the private key password. This same password will be set to 
+        `GPG_PASSPHRASE` in the CircleCI context.
+    
+            gpg --export-secret-keys --armour 964B5E720AA4F31A > new_private.gpg.asc    
+     
+     3. Base64 encode the .asc key.
+     
+            cat new_private.gpg.asc | base64 > SECRING_GPG_ASC_BASE64.txt
+
+        The contents of `SECRING_GPG_ASC_BASE64.txt` will be set to `SECRING_GPG_ASC_BASE64` in the CircleCI context.
