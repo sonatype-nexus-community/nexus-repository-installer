@@ -13,6 +13,9 @@ BUNDLE_FILE := nexus-$(VERSION)-unix.tar.gz
 
 FETCH_URL ?= "http://download.sonatype.com/nexus/3/$(BUNDLE_FILE)"
 
+# skip download and use local build/$(BUNDLE_FILE)
+SKIP_FETCH ?= false
+
 RHEL_VERSION ?= 7
 # The release of the RPM package
 PKG_RELEASE ?= 1.el$(RHEL_VERSION)
@@ -79,8 +82,10 @@ endif
 
 # retrieve the original bundle from FETCH_URL
 $(BUILDDIR)/$(BUNDLE_FILE):
+ifeq ($(SKIP_FETCH),false)
 	@ echo "fetching bundle from $(FETCH_URL)"
 	@ curl -s -L -k -f -o $@ $(FETCH_URL)
+endif
 
 # create RPM subdirectories
 $(rpm_subdirs):
