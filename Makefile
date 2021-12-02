@@ -14,6 +14,8 @@ BUNDLE_FILE := nexus-$(VERSION)-unix.tar.gz
 FETCH_URL ?= "http://download.sonatype.com/nexus/3/$(BUNDLE_FILE)"
 
 # skip download and use local build/$(BUNDLE_FILE)
+# save bandwidth if you have build/* artifacts present, or workaround
+# upstream connectivity issues.
 SKIP_FETCH ?= false
 
 RHEL_VERSION ?= 7
