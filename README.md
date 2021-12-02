@@ -85,6 +85,14 @@ $ make docker-all
 $ VERSION=3.15.2-01 make docker-all
 ```
 
+Build the RPM in a docker container.  The RPM will be written to `build/`.
+Skip download and use local build/BUNDLE_FILE. Useful if cached build
+artifacts are unavailable upstream.
+
+```
+$ SKIP_FETCH=true make docker
+```
+
 Use the `make help` command to see more options.
 
 Tweaks made to the Application
