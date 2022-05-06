@@ -96,10 +96,14 @@ commands:
           repository-name: << parameters.repository-name >>
 
 
+executors:
+  jdk:
+    docker:
+      - image: cimg/openjdk:8.0
+
 jobs:
   build:
-    docker:
-      - image: circleci/openjdk:8
+    executor: jdk
     steps:
       - checkout
       - setup_remote_docker
@@ -122,8 +126,7 @@ jobs:
             echo export DEB_NAME="${DEB_NAME}" >> "$BASH_ENV"
 
   build_and_deploy:
-    docker:
-      - image: circleci/openjdk:8
+    executor: jdk
     steps:
       - checkout
       - setup_remote_docker
@@ -150,8 +153,7 @@ jobs:
       - deploy-deb-production
 
   read_published_release_version:
-    docker:
-      - image: circleci/openjdk:8
+    executor: jdk
     parameters:
       ssh-fingerprints:
         type: string
