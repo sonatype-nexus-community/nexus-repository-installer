@@ -26,7 +26,7 @@ else
   chmod 700 build/rpm-signing-keys/uhome
   check_errs $? "Unable to set gpg dir permissions"
 
-  echo ${SECRING_GPG_ASC_BASE64} | base64 --decode | gpg --batch --no-tty --import --yes
+  echo "${SECRING_GPG_ASC_BASE64}" | base64 --decode | gpg --batch --no-tty --import --yes
   check_errs $? "Unable to create key file"
 
   export RPM_NAME=$1
@@ -40,7 +40,7 @@ else
   #rpm -K build/${RPM_NAME}
   #check_errs $? "Unable to check rpm key"
   # at least make sure output of rpm -K includes "PGP"
-  RPM_KEY_CHECK_RESULT=$(rpm -K build/${RPM_NAME})
+  RPM_KEY_CHECK_RESULT=$(rpm -K "build/${RPM_NAME}")
   echo "RPM_KEY_CHECK_RESULT: ${RPM_KEY_CHECK_RESULT}"
   if [[ ${RPM_KEY_CHECK_RESULT} != *"PGP"* ]];then
     check_errs 1 "RPM not signed with PGP key"
