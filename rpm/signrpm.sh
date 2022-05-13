@@ -13,7 +13,7 @@ check_errs()
 
 echo Sign rpm script running
 
-if [ -z ${SECRING_GPG_ASC_BASE64} ]; then
+if [ -z "${SECRING_GPG_ASC_BASE64}" ]; then
   echo "SECRING_GPG_ASC_BASE64 is unset, skipping rpm signing";
 else
   echo "SECRING_GPG_ASC_BASE64 var is set, attempting to sign rpm";
