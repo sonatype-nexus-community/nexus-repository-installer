@@ -7,13 +7,13 @@ check_errs()
   if [ "${1}" -ne "0" ]; then
     echo "ERROR # ${1} : ${2}"
     # as a bonus, make our script exit with the right error code.
-    exit ${1}
+    exit "${1}"
   fi
 }
 
 echo Sign rpm script running
 
-if [ -z ${SECRING_GPG_ASC_BASE64+x} ]; then
+if [ -z "${SECRING_GPG_ASC_BASE64}" ]; then
   echo "SECRING_GPG_ASC_BASE64 is unset, skipping rpm signing";
 else
   echo "SECRING_GPG_ASC_BASE64 var is set, attempting to sign rpm";
