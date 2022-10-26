@@ -203,7 +203,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
       - build_and_deploy:
           context: installer-deploy
           requires:
@@ -211,7 +211,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
 
   check_for_new_release:
     triggers:
@@ -220,7 +220,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - read_published_release_version:
           ssh-fingerprints: "25:b0:d0:3a:48:c9:02:01:66:d3:ae:3b:bb:b8:42:4a"
