@@ -183,7 +183,7 @@ jobs:
             then
               echo "No action required, installer $VERSION_BUILT is up to date."
             else
-              echo "Stale version detected: $VERSION_BUILT. New Nexus Installer ($VERSION_LATEST) needs to be built and published."
+              echo "Stale version detected: $VERSION_BUILT. New Installer ($VERSION_LATEST) needs to be built and published."
               # write new version to build to disk, commit with trigger tag, and push changes to git
               echo "$VERSION_LATEST" > version-to-build.txt
               git commit version-to-build.txt -m "[skip ci] Automated update to build new version: $VERSION_LATEST"
