@@ -24,7 +24,7 @@ commands:
           name: Deploy .rpm to a Yum repository
           command: |
             echo "Running deploy-rpm: ${RPM_NAME} to: << parameters.serverurl >><< parameters.repository-name >>"
-            curl -v --user << parameters.username >>:<< parameters.password >> --upload-file build/${RPM_NAME} << parameters.serverurl >><< parameters.repository-name >>/
+            curl --user << parameters.username >>:<< parameters.password >> --upload-file build/${RPM_NAME} << parameters.serverurl >><< parameters.repository-name >>/
             res=$?
             if test "$res" != "0"; then
               echo "the yum curl command failed with: $res"
@@ -67,7 +67,7 @@ commands:
           name: Deploy .deb to an Apt repository
           command: |
             echo "Running deploy-deb: ${DEB_NAME} to: << parameters.serverurl >><< parameters.repository-name >>"
-            curl -v --user << parameters.username >>:<< parameters.password >> -H "Content-Type: multipart/form-data" --data-binary "@build/${DEB_NAME}" << parameters.serverurl >><< parameters.repository-name >>/
+            curl --user << parameters.username >>:<< parameters.password >> -H "Content-Type: multipart/form-data" --data-binary "@build/${DEB_NAME}" << parameters.serverurl >><< parameters.repository-name >>/
             res=$?
             if test "$res" != "0"; then
               echo "the apt curl command failed with: $res"
