@@ -4,7 +4,7 @@ Release:	%%RELEASE%%
 Summary:	Nexus Repository Manager 3
 License:	Proprietary
 Requires:       systemd
-Requires:       java-1.8.0-openjdk-headless
+Requires:       java-17-openjdk-headless
 URL:		https://www.sonatype.com
 Source0:	%%BUNDLE_FILE%%
 Source1:        %{name}-%{version}-rpm-extra.tar.gz
@@ -105,6 +105,8 @@ fi
 /opt/sonatype/sonatype-work/nexus3
 
 %changelog
+* Thu Aug 08 2024 Dan Rollo <drollo@sonatype.com>
+require jdk 17.
 * Thu Mar 05 2020 Dan Rollo <drollo@sonatype.com>
 switch to systemd
 * Thu Feb 06 2020 Dan Rollo <drollo@sonatype.com>
