@@ -148,6 +148,8 @@ jobs:
             echo DEB_NAME: $DEB_NAME
             echo export RPM_NAME="${RPM_NAME}" >> "$BASH_ENV"
             echo export DEB_NAME="${DEB_NAME}" >> "$BASH_ENV"
+            echo "*** Forcing failure while version updates are being resolved...stay tuned... ***"
+            exit 2
 
       - deploy-rpm-production
       - deploy-deb-production
