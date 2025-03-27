@@ -35,12 +35,12 @@ cd ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/opt/sonatype/nexus3
 mkdir -p %{buildroot}/opt/sonatype/sonatype-work/nexus3
-rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/nexus-$(echo ${RPM_PACKAGE_VERSION} | tr '_' '-')/ %{buildroot}/opt/sonatype/nexus3
+rsync -a --exclude 'jdk' ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/nexus-$(echo ${RPM_PACKAGE_VERSION} | tr '_' '-')/ %{buildroot}/opt/sonatype/nexus3
 rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/extra %{buildroot}/opt/sonatype/nexus3/
 rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/sonatype-work/nexus3/ %{buildroot}/opt/sonatype/sonatype-work/nexus3
 
 #patch config
-perl -p -i -e 's/#run_as_user=""/run_as_user="nexus3"/' %{buildroot}/opt/sonatype/nexus3/bin/nexus.rc
+perl -p -i -e 's/#run_as_user=""/run_as_user="nexus3"/' %{buildroot}/opt/sonatype/nexus3/bin/nexus
 perl -p -i -e 's/\.\.\/sonatype-work/\/opt\/sonatype\/sonatype-work/g' %{buildroot}/opt/sonatype/nexus3/bin/nexus.vmoptions
 
 mkdir -p %{buildroot}/etc/systemd/system
@@ -98,7 +98,7 @@ fi
 /opt/sonatype/nexus3
 %dir %config(noreplace) /opt/sonatype/nexus3/extra
 %dir %config(noreplace) /opt/sonatype/nexus3/etc
-%config(noreplace) /opt/sonatype/nexus3/bin/nexus.rc
+%config(noreplace) /opt/sonatype/nexus3/bin/nexus
 %config(noreplace) /opt/sonatype/nexus3/bin/nexus.vmoptions
 %config /opt/sonatype/nexus3/extra/daemon/%{service_name}
 %defattr(-,nexus3,nexus3)
