@@ -42,6 +42,7 @@ rsync -a ${RPM_PACKAGE_NAME}-${RPM_PACKAGE_VERSION}/sonatype-work/nexus3/ %{buil
 #patch config
 perl -p -i -e 's/#run_as_user=""/run_as_user="nexus3"/' %{buildroot}/opt/sonatype/nexus3/bin/nexus
 perl -p -i -e 's/\.\.\/sonatype-work/\/opt\/sonatype\/sonatype-work/g' %{buildroot}/opt/sonatype/nexus3/bin/nexus.vmoptions
+perl -p -i -e 's/^EMBEDDED_JDK/#EMBEDDED_JDK/' %{buildroot}/opt/sonatype/nexus3/bin/nexus 
 
 mkdir -p %{buildroot}/etc/systemd/system
 ln -sf /opt/sonatype/nexus3/extra/daemon/%{service_name} %{buildroot}/etc/systemd/system/%{service_name}
@@ -105,6 +106,8 @@ fi
 /opt/sonatype/sonatype-work/nexus3
 
 %changelog
+* Thu Mar 27 2025 Frank Vissing <lunarfs@hotmail.com>
+exclude jdk bin folder from package, soley rely on dependency
 * Thu Aug 08 2024 Dan Rollo <drollo@sonatype.com>
 require jdk 17.
 * Thu Mar 05 2020 Dan Rollo <drollo@sonatype.com>
