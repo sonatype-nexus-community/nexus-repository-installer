@@ -8,8 +8,7 @@ APP = nexus-repository-manager
 VERSION ?= $(shell cat version-to-build.txt)
 
 # the name of the original bundle file
-#BUNDLE_FILE := $(APP)-$(VERSION)-unix.tar.gz
-BUNDLE_FILE := nexus-$(VERSION)-unix.tar.gz
+BUNDLE_FILE := nexus-unix-x86-64-$(VERSION).tar.gz
 
 FETCH_URL ?= "http://download.sonatype.com/nexus/3/$(BUNDLE_FILE)"
 
